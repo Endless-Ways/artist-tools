@@ -10,4 +10,5 @@ To use:
 4. Click the "Go Live" button on the bottom edge of the Visual Studio Code window - you'll find it somewhere near the bottom right hand corner. 
 5. On the browser window that opens up, click the `testing-room` link that appears to open up the example project.
 6. Press space to generate a new token seed.
-7. If you make changes to the files in the `testing-room` folder, when you save them the browser window automatically reloads. You can also make your own copy of the `testing-room` folder and use it to develop and test own artwork. 
+
+If you make changes to the files in the `testing-room` folder, when you save them the browser window automatically reloads. You can also make your own copy of the `testing-room` folder and use it to develop and test own artwork. 
