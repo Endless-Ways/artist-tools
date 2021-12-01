@@ -70,7 +70,7 @@ function draw() {
         stroke(255);
         noFill();
     }
-    
+
     // draw a rectangle based on feature floats 4-7
     const x = width*features[4];
     const y = height*features[5];

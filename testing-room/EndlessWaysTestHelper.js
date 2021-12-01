@@ -41,14 +41,14 @@ class EndlessWaysTestHelper {
     }
 }
 
-const endlessWaysTestHelper1 = new EndlessWaysTestHelper();
+const endlessWaysTestHelper = new EndlessWaysTestHelper();
 
 var endlessWaysTokenInfo = {
     artworkId: 0,
     mintNumber: "0",
     seed: "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
 }
-endlessWaysTestHelper1.makeNewTokenInfo();
+endlessWaysTestHelper.makeNewTokenInfo();
 
 // to generate new token info, call:
 // endlessWaysTestHarness.makeNewTokenInfo();
