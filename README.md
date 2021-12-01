@@ -11,4 +11,7 @@ To use:
 5. On the browser window that opens up, click the `testing-room` link that appears to open up the example project.
 6. Press space to generate a new token seed.
 
-If you make changes to the files in the `testing-room` folder, when you save them the browser window automatically reloads. You can also make your own copy of the `testing-room` folder and use it to develop and test own artwork. 
+If you make changes to the files in the `testing-room` folder, when you save them the browser window automatically reloads. You can also make your own copy of the `testing-room` folder and use it to develop and test your own artwork. 
+
+## utilities
+Some utilities that you can copy and paste into your own projects.
