@@ -1,4 +1,5 @@
-/// copied from utilities/TokenInfoUtils.js
+/// the following EndlessWaysTokenInfoUtils class has been copied from 
+/// https://github.com/Endless-Ways/artist-tools/blob/main/utilities/TokenInfoUtils.js
 
 class EndlessWaysTokenInfoUtils {
 
@@ -36,7 +37,11 @@ class EndlessWaysTokenInfoUtils {
     }
 }
 
-/// the code of your artwork is below
+
+/////////////////////////////////////////
+/// the code of your artwork is below ///
+/////////////////////////////////////////
+
 
 function setup() {
     // square aspect ratio
@@ -65,6 +70,7 @@ function draw() {
         stroke(255);
         noFill();
     }
+    
     // draw a rectangle based on feature floats 4-7
     const x = width*features[4];
     const y = height*features[5];

@@ -28,9 +28,6 @@ class EndlessWaysTokenInfoUtils {
             const rawFeature = parseInt(part, 16);
             const rawRange = Math.pow(16, part.length);
             const feature = rawFeature/(rawRange-1);
-            if (feature < 0 || feature > 1) {
-                throw new Error("bad feature: " + part + " -> " + rawFeature + " -> " + feature + " (range " + rawRange + ")");
-            }
             features.push(feature);
         }
         return features;
