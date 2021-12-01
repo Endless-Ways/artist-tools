@@ -19,5 +19,5 @@ Some utilities that you can copy and paste into your own projects.
 `Random` - a pseudo-random number generator class that you can use to ensure predictable results in all web browsers.
 
 `EndlessWaysSeedUtils` - a class that provides two static methods:
-* `getRandom(seedString)`: returns an instance of the Random() class seeded using the token seed `seedString`.
+* `getRandom(seedString)`: returns an instance of the `Random` class seeded using the token seed `seedString`.
 * `getFeatures(seedString, count)`: returns an array of `count` floating point numbers between 0 and 1, derived from the token seed `seedString`. 
