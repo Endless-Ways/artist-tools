@@ -82,7 +82,7 @@ function keyPressed() {
 
 //////////////////////////////////
 // The following is to help deal with the endlessWaysTokenInfo object, and has been copied from
-// https://github.com/Endless-Ways/artist-tools/blob/main/utilities/EndlessWaysSeedUtils.js
+// https://github.com/Endless-Ways/artist-tools/blob/main/utilities/EndlessWaysUtilities.js
 //////////////////////////////////
 
 

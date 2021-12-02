@@ -44,13 +44,15 @@ function makeRandomFromEndlessWaysTokenSeed() {
     return new Random(seedNumber);
 }
 
+
 // 16 bit precision pseudo-random number generator. Safe for cross-browser use.
 // 
 // Preferred over p5.js built-in random, or any other random that might potentially fall back
 // to calling the browser's own implementation - these might make your artwork look different 
 // on different web browsers, which is probably not what you want to happen.
 // 
-// Use by calling makeRandomFromSeed(), or provide your own random seed.
+// Use by calling makeRandomFromSeed(), or provide your own (number) seed.
+//
 class Random {
     constructor(seed = 0) {
         this.seed = seed;

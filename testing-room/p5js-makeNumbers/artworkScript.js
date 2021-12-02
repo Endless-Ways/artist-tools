@@ -70,7 +70,7 @@ function keyPressed() {
 
 //////////////////////////////////
 // The following is to help deal with the endlessWaysTokenInfo object, and has been copied from
-// https://github.com/Endless-Ways/artist-tools/blob/main/utilities/EndlessWaysSeedUtils.js
+// https://github.com/Endless-Ways/artist-tools/blob/main/utilities/EndlessWaysUtilities.js
 //////////////////////////////////
 
 // Get a fixed number of numbers between 0 and 1 (>=0 and <1) directly from the current 
