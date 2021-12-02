@@ -23,7 +23,7 @@ function makeNumbersFromSeed(howMany) {
         // convert part to a float 0..1
         const rawNumber = parseInt(part, 16);
         const rawRange = Math.pow(16, part.length);
-        const number = rawNumber/(rawRange-1);
+        const number = rawNumber/rawRange;
         numbers.push(number);
     }
     return numbers;
