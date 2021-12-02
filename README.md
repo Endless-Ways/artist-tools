@@ -4,7 +4,7 @@
 
 A series of samples that you can use to learn how to develop an Endless Ways p5.js project. 
 
-Each subfolder contains an `index.html` and an example `artworkScript.js`, which are setup to simulate minting the artwork in `artworkScript.js` on Endless Ways. The file `EndlessWaysTestHelper.js` sets up the testing room environment and simulates the minting process.
+Each subfolder contains an `index.html` and an example `artworkScript.js`. The `index.html` is set up to simulate minting the artwork contained in `artworkScript.js` on Endless Ways. `index.html` also loads `../EndlessWaysTestHelper.js`, which sets up the testing room environment and simulates the minting process.
 
 To use:
 1. Download this repository as a ZIP file or clone it using git.
