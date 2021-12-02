@@ -1,4 +1,4 @@
-// Get a certain number of numbers between 0 and 1 (>=0 and <1) directly from the current 
+// Get an array of numbers between 0 and 1 (>=0 and <1) directly from the current 
 // Endless Ways token seed. This works by slicing seed into roughly equal-sized chunks and 
 // interpreting each of them as a float between 0 and 1. 
 //
