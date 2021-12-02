@@ -49,7 +49,7 @@ class EndlessWaysTestHelper {
     }
 
     // draw the endlessWaysTokenInfo
-    drawMintInfo() {
+    drawTokenInfo() {
         push();
         colorMode(RGB, 255, 255, 255, 1);
         rectMode(CORNER);

@@ -1,9 +1,20 @@
 // Whether we're running inside the testing-room, or live on the Endless Ways website, there is
 // a global object called endlessWaysTokenInfo that looks like this:
+//
 // const endlessWaysTokenInfo = {
-//   
+//    artworkId: 0,
+//    mintNumber: this.nextMintNumber.toString(),
+//    seed: getRandomSeed(this)
 // }
+//
+// To simulate this when developing and testing your code, include EndlessWaysTestHelper.js in 
+// a <script> node in your index.html <head> (see index.html in this folder). This will 
+// automatically make an endlessWaysTokenInfo object for you, and an endlessWaysTestHelper 
+// object that manages the endlessWaysTokenInfo and can also do a couple of other handy things. 
 
+//////////////////////////////////
+// Your artwork code starts here
+//////////////////////////////////
 
 function setup() {
     // square aspect ratio
@@ -40,26 +51,27 @@ function draw() {
     const h = height*0.5*numbers[7];
     rect(x, y, w, h);
 
-    // display mint info
-    if (typeof(endlessWaysTestHelper) !== 'undefined') {
+    // display token info (if we're inside the testing room)
+    if (typeof(endlessWaysTestHelper) !== "undefined") {
         stroke(255);
-        endlessWaysTestHelper.drawMintInfo();
+        endlessWaysTestHelper.drawTokenInfo();
     }
 }
 
 function keyPressed() {
-    // press space to move to the next mint
+    // press space to move to the next mint (if we're inside the testing room)
     if (keyCode === 32) {
-        // only run this if we're inside the testing room
-        if (typeof(endlessWaysTestHelper) !== 'undefined') {
+        if (typeof(endlessWaysTestHelper) !== "undefined") {
             endlessWaysTestHelper.makeNewTokenInfo();
         }
     }
 }
 
 
-// the follow has been copied from
+//////////////////////////////////
+// The following is to help deal with the endlessWaysTokenInfo object, and has been copied from
 // https://github.com/Endless-Ways/artist-tools/blob/main/utilities/EndlessWaysSeedUtils.js
+//////////////////////////////////
 
 // Get a fixed number of numbers between 0 and 1 (>=0 and <1) directly from the current 
 // Endless Ways token seed. This works by slicing seed into roughly equal-sized chunks and 

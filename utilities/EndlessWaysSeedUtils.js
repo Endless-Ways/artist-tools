@@ -1,52 +1,56 @@
-class EndlessWaysSeedUtils {
-
-    // Get a Random object that will give you an endless, predictable sequence of numbers based
-    // on the current Endless Ways token seed.
-    static makeRandomFromSeed() {
-        const seedString = endlessWaysTokenInfo.seed;
-        // collapse the seed string to a single 32 bit number using XOR
-        var seedNumber = 0;
-        for (var i=0; i<8; i++) {
-            var part = seedString.substring(i*8, (i+1)*8);
-            seedNumber ^= parseInt(part, 16);
-        }
-        
-        return new Random(seedNumber);
+// Get a fixed number of numbers between 0 and 1 (>=0 and <1) directly from the current 
+// Endless Ways token seed. This works by slicing seed into roughly equal-sized chunks and 
+// interpreting each of them as a float between 0 and 1. 
+//
+// howMany specifies how many numbers you want - it must be >=5 and <=64. The more numbers 
+// you ask for, the less variation you will get. It's best not to ask for more than 24 
+// numbers.
+function makeNumbersFromSeed(howMany) {
+    if (howMany < 5) {
+        // parseInt is unsafe for numbers that are 52 bits or larger
+        throw new Error("Count " + howMany + " is too small - must be >= 5");
     }
-
-    // Get a fixed number of numbers between 0 and 1 (>=0 and <1) directly from the current 
-    // Endless Ways token seed. This works by slicing seed into roughly equal-sized chunks and 
-    // interpreting each of them as a float between 0 and 1. 
-    //
-    // howMany specifies how many numbers you want - it must be >=5 and <=64. The more numbers 
-    // you ask for, the less variation you will get. It's best not to ask for more than 24 
-    // numbers.
-    static makeNumbersFromSeed(howMany) {
-        if (howMany < 5) {
-            // parseInt is unsafe for numbers that are 52 bits or larger
-            throw new Error("Count " + howMany + " is too small - must be >= 5");
-        }
-        if (howMany > 64) {
-            throw new Error("Count " + howMany + " is too big - must be <= 64");
-        }
-        const seedString = endlessWaysTokenInfo.seed;
-        var numbers = [];
-        const step = 64/howMany;
-        for (var i=0; i<howMany; i++) {
-            const thisStart = Math.floor(i*step);
-            const nextStart = Math.floor((i+1)*step);
-            const part = seedString.substring(thisStart, nextStart);
-            // convert part to a float 0..1
-            const rawNumber = parseInt(part, 16);
-            const rawRange = Math.pow(16, part.length);
-            const number = rawNumber/(rawRange-1);
-            numbers.push(number);
-        }
-        return numbers;
+    if (howMany > 64) {
+        throw new Error("Count " + howMany + " is too big - must be <= 64");
     }
+    const seedString = endlessWaysTokenInfo.seed;
+    var numbers = [];
+    const step = 64/howMany;
+    for (var i=0; i<howMany; i++) {
+        const thisStart = Math.floor(i*step);
+        const nextStart = Math.floor((i+1)*step);
+        const part = seedString.substring(thisStart, nextStart);
+        // convert part to a float 0..1
+        const rawNumber = parseInt(part, 16);
+        const rawRange = Math.pow(16, part.length);
+        const number = rawNumber/(rawRange-1);
+        numbers.push(number);
+    }
+    return numbers;
 }
 
-// 16 bit precision pseudo-random number generator
+
+// Get a Random object that will give you an endless, predictable sequence of numbers based
+// on the current Endless Ways token seed.
+function makeRandomFromEndlessWaysTokenSeed() {
+    const seedString = endlessWaysTokenInfo.seed;
+    // collapse the seed string to a single 32 bit number using XOR
+    var seedNumber = 0;
+    for (var i=0; i<8; i++) {
+        var part = seedString.substring(i*8, (i+1)*8);
+        seedNumber ^= parseInt(part, 16);
+    }
+    
+    return new Random(seedNumber);
+}
+
+// 16 bit precision pseudo-random number generator. Safe for cross-browser use.
+// 
+// Preferred over p5.js built-in random, or any other random that might potentially fall back
+// to calling the browser's own implementation - these might make your artwork look different 
+// on different web browsers, which is probably not what you want to happen.
+// 
+// Use by calling makeRandomFromSeed(), or provide your own random seed.
 class Random {
     constructor(seed = 0) {
         this.seed = seed;
