@@ -64,7 +64,7 @@ function draw() {
     // display mint info (if we're inside the testing room)
     if (typeof(endlessWaysTestHelper) !== 'undefined') {
         stroke(255);
-        endlessWaysTestHelper.drawMintInfo();
+        endlessWaysTestHelper.drawTokenInfo();
     }
 }
 
