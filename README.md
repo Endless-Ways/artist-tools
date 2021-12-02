@@ -9,7 +9,7 @@ Each subfolder contains an `index.html` and an example `artworkScript.js`. The `
 To use:
 1. Download this repository as a ZIP file or clone it using git.
 2. Launch [Visual Studio Code](https://code.visualstudio.com), go to the `File` menu -> `Open Folder...` and open the `artist-tools` folder you just downloaded.
-3. If you haven't already, go the Extensions panel in Visual Studio Code and install the Live Server extension by Ritwick Day (use the Search Extensions in Marketplace search box at the top to find it, then click the Install button).
+3. If you haven't already, go the Extensions panel in Visual Studio Code (`View` menu -> `Extensions`) and install the "Live Server" extension by Ritwick Day (use the "Search Extensions in Marketplace" search box at the top of the Extensions panel to find it, then click the Install button).
 4. Click the "Go Live" button on the bottom edge of the Visual Studio Code window - you'll find it somewhere near the bottom right hand corner. 
 5. On the browser window that opens up, first click the `testing-room` link that appears, then `p5js-makeNumbers` to open up the simplest example project.
 
