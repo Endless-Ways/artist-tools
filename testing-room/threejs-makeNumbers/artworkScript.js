@@ -36,11 +36,26 @@ animate();
 
 function init() {
 
+    // provided for you
     container = document.getElementById( 'container' );
 
     camera = new THREE.PerspectiveCamera( 20, window.innerWidth / window.innerHeight, 1, 10000 );
     camera.position.z = 1800;
 
+    // separate initScene() function, so we can call it repeatedly from 
+    // onDocumentKeyDown to respond to user pressing space
+    initScene();
+ 
+    renderer = new THREE.WebGLRenderer( { antialias: true } );
+    renderer.setPixelRatio( window.devicePixelRatio );
+    renderer.setSize( window.innerWidth, window.innerHeight );
+    container.appendChild( renderer.domElement );
+
+    document.addEventListener( 'mousemove', onDocumentMouseMove );
+    document.addEventListener( 'keydown', onDocumentKeyDown, false);
+}
+
+function initScene() {
     scene = new THREE.Scene();
     scene.background = new THREE.Color( 0xffffff );
 
@@ -48,50 +63,17 @@ function init() {
     light.position.set( 0, 0, 1 );
     scene.add( light );
 
-    // shadow
+    // get 6 random numbers directly from the token seed
+    let numbers = makeNumbersFromEndlessWaysTokenSeed(6);
+    console.log(numbers);
 
-    const canvas = document.createElement( 'canvas' );
-    canvas.width = 128;
-    canvas.height = 128;
+    const radius = 50 + numbers[0]*200;
 
-    const context = canvas.getContext( '2d' );
-    const gradient = context.createRadialGradient( canvas.width / 2, canvas.height / 2, 0, canvas.width / 2, canvas.height / 2, canvas.width / 2 );
-    gradient.addColorStop( 0.1, 'rgba(210,210,210,1)' );
-    gradient.addColorStop( 1, 'rgba(255,255,255,1)' );
+    const detail = 1 + Math.floor(numbers[1] * 4);
+    const geometry1 = new THREE.IcosahedronGeometry( radius, detail );
 
-    context.fillStyle = gradient;
-    context.fillRect( 0, 0, canvas.width, canvas.height );
-
-    const shadowTexture = new THREE.CanvasTexture( canvas );
-
-    const shadowMaterial = new THREE.MeshBasicMaterial( { map: shadowTexture } );
-    const shadowGeo = new THREE.PlaneGeometry( 300, 300, 1, 1 );
-
-    let shadowMesh;
-
-    shadowMesh = new THREE.Mesh( shadowGeo, shadowMaterial );
-    shadowMesh.position.y = - 250;
-    shadowMesh.rotation.x = - Math.PI / 2;
-    scene.add( shadowMesh );
-
-    shadowMesh = new THREE.Mesh( shadowGeo, shadowMaterial );
-    shadowMesh.position.y = - 250;
-    shadowMesh.position.x = - 400;
-    shadowMesh.rotation.x = - Math.PI / 2;
-    scene.add( shadowMesh );
-
-    shadowMesh = new THREE.Mesh( shadowGeo, shadowMaterial );
-    shadowMesh.position.y = - 250;
-    shadowMesh.position.x = 400;
-    shadowMesh.rotation.x = - Math.PI / 2;
-    scene.add( shadowMesh );
-
-    const radius = 200;
-
-    const geometry1 = new THREE.IcosahedronGeometry( radius, 1 );
-
-    const count = geometry1.attributes.position.count;
-    geometry1.setAttribute( 'color', new THREE.BufferAttribute( new Float32Array( count * 3 ), 3 ) );
+    const vertexCount = geometry1.attributes.position.count;
+    geometry1.setAttribute( 'color', new THREE.BufferAttribute( new Float32Array( vertexCount * 3 ), 3 ) );
 
     const geometry2 = geometry1.clone();
     const geometry3 = geometry1.clone();
@@ -104,17 +86,23 @@ function init() {
     const colors2 = geometry2.attributes.color;
     const colors3 = geometry3.attributes.color;
 
-    for ( let i = 0; i < count; i ++ ) {
+    const hue1 = numbers[2];
+    const sat2 = numbers[3];
+    const green3 = numbers[4];
+    const colourOffsetMultiplier = numbers[5];
+    for ( let i = 0; i < vertexCount; i ++ ) {
 
-        color.setHSL( ( positions1.getY( i ) / radius + 1 ) / 2, 1.0, 0.5 );
+        const yPos1 = ( positions1.getY( i ) / radius + 1 );
+        color.setHSL( (hue1 + colourOffsetMultiplier * yPos1) % 1, 1.0, 0.5 );
         colors1.setXYZ( i, color.r, color.g, color.b );
 
-        color.setHSL( 0, ( positions2.getY( i ) / radius + 1 ) / 2, 0.5 );
+        const yPos2 = ( positions2.getY( i ) / radius + 1 );
+        color.setHSL( 0, (sat2 + colourOffsetMultiplier * yPos2) % 1, 0.5 );
         colors2.setXYZ( i, color.r, color.g, color.b );
 
-        color.setRGB( 1, 0.8 - ( positions3.getY( i ) / radius + 1 ) / 2, 0 );
+        const yPos3 = ( positions3.getY( i ) / radius + 1 );
+        color.setRGB( 0, (green3 + colourOffsetMultiplier * yPos3) % 1, 0 );
         colors3.setXYZ( i, color.r, color.g, color.b );
-
     }
 
     const material = new THREE.MeshPhongMaterial( {
@@ -130,69 +118,84 @@ function init() {
     let wireframe = new THREE.Mesh( geometry1, wireframeMaterial );
     mesh.add( wireframe );
     mesh.position.x = - 400;
-    mesh.rotation.x = - 1.87;
     scene.add( mesh );
 
     mesh = new THREE.Mesh( geometry2, material );
     wireframe = new THREE.Mesh( geometry2, wireframeMaterial );
     mesh.add( wireframe );
-    mesh.position.x = 400;
     scene.add( mesh );
 
     mesh = new THREE.Mesh( geometry3, material );
     wireframe = new THREE.Mesh( geometry3, wireframeMaterial );
     mesh.add( wireframe );
+    mesh.position.x = 400;
     scene.add( mesh );
-
-    renderer = new THREE.WebGLRenderer( { antialias: true } );
-    renderer.setPixelRatio( window.devicePixelRatio );
-    renderer.setSize( window.innerWidth, window.innerHeight );
-    container.appendChild( renderer.domElement );
-
-    document.addEventListener( 'mousemove', onDocumentMouseMove );
-
-    //
-
-    window.addEventListener( 'resize', onWindowResize );
-
-}
-
-function onWindowResize() {
-
-    windowHalfX = window.innerWidth / 2;
-    windowHalfY = window.innerHeight / 2;
-
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
-
-    renderer.setSize( window.innerWidth, window.innerHeight );
-
 }
 
 function onDocumentMouseMove( event ) {
-
     mouseX = ( event.clientX - windowHalfX );
     mouseY = ( event.clientY - windowHalfY );
+}
 
+function onDocumentKeyDown( event ) {
+    var keyCode = event.which;
+
+    // press space to move to the next mint
+    if (keyCode === 32) {
+        // only run this if we're inside the testing room
+        if (typeof(endlessWaysTestHelper) !== 'undefined') {
+            endlessWaysTestHelper.makeNewTokenInfo();
+            initScene();
+        }
+    }
 }
 
 //
 
 function animate() {
-
     requestAnimationFrame( animate );
-
     render();
-
 }
 
 function render() {
-
     camera.position.x += ( mouseX - camera.position.x ) * 0.05;
     camera.position.y += ( - mouseY - camera.position.y ) * 0.05;
-
     camera.lookAt( scene.position );
-
     renderer.render( scene, camera );
+}
 
+//////////////////////////////////
+// The following is to help deal with the endlessWaysTokenInfo object, and has been copied from
+// https://github.com/Endless-Ways/artist-tools/blob/main/utilities/EndlessWaysUtilities.js
+//////////////////////////////////
+
+// Get an array of numbers between 0 and 1 (>=0 and <1) directly from the current 
+// Endless Ways token seed. This works by slicing seed into roughly equal-sized chunks and 
+// interpreting each of them as a float between 0 and 1. 
+//
+// howMany specifies how many numbers you want - it must be >=5 and <=64. The more numbers 
+// you ask for, the less variation you will get. It's best not to ask for more than 24 
+// numbers.
+function makeNumbersFromEndlessWaysTokenSeed(howMany) {
+    if (howMany < 5) {
+        // parseInt is unsafe for numbers that are 52 bits or larger
+        throw new Error("Count " + howMany + " is too small - must be >= 5");
+    }
+    if (howMany > 64) {
+        throw new Error("Count " + howMany + " is too big - must be <= 64");
+    }
+    const seedString = endlessWaysTokenInfo.seed;
+    var numbers = [];
+    const step = 64/howMany;
+    for (var i=0; i<howMany; i++) {
+        const thisStart = Math.floor(i*step);
+        const nextStart = Math.floor((i+1)*step);
+        const part = seedString.substring(thisStart, nextStart);
+        // convert part to a float 0..1
+        const rawNumber = parseInt(part, 16);
+        const rawRange = Math.pow(16, part.length);
+        const number = rawNumber/rawRange;
+        numbers.push(number);
+    }
+    return numbers;
 }
