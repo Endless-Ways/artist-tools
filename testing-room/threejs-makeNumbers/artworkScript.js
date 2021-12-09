@@ -16,6 +16,8 @@
 // Your artwork code starts here
 //////////////////////////////////
 
+// adapted from https://github.com/mrdoob/three.js/blob/master/examples/webgl_geometry_colors.html
+
 // use CDN:
 import * as THREE from 'https://cdn.skypack.dev/three@0.132.2'
 
@@ -67,7 +69,9 @@ function initScene() {
     let numbers = makeNumbersFromEndlessWaysTokenSeed(6);
     console.log(numbers);
 
-    const radius = 50 + numbers[0]*200;
+    const oneThirdWindowWidth = window.innerWidth/3;
+
+    const radius = 50 + numbers[0]*(oneThirdWindowWidth/2);
 
     const detail = 1 + Math.floor(numbers[1] * 4);
     const geometry1 = new THREE.IcosahedronGeometry( radius, detail );
@@ -117,7 +121,7 @@ function initScene() {
     let mesh = new THREE.Mesh( geometry1, material );
     let wireframe = new THREE.Mesh( geometry1, wireframeMaterial );
     mesh.add( wireframe );
-    mesh.position.x = - 400;
+    mesh.position.x = - oneThirdWindowWidth*2;
     scene.add( mesh );
 
     mesh = new THREE.Mesh( geometry2, material );
@@ -128,7 +132,7 @@ function initScene() {
     mesh = new THREE.Mesh( geometry3, material );
     wireframe = new THREE.Mesh( geometry3, wireframeMaterial );
     mesh.add( wireframe );
-    mesh.position.x = 400;
+    mesh.position.x = oneThirdWindowWidth*2;
     scene.add( mesh );
 }
 
