@@ -19,10 +19,10 @@
 // adapted from https://github.com/mrdoob/three.js/blob/master/examples/webgl_geometry_colors.html
 
 // use CDN:
-import * as THREE from 'https://cdn.skypack.dev/three@0.132.2'
+import * as THREE from 'https://cdn.skypack.dev/three@0.135'
 
 // if you need extra imports from the three.js examples library, import them like this:
-// import { TrackballControls } from 'https://cdn.skypack.dev/three@0.132.2/examples/jsm/controls/TrackballControls.js';
+// import { TrackballControls } from 'https://cdn.skypack.dev/three@0.135/examples/jsm/controls/TrackballControls.js';
 
 let container;
 
@@ -41,7 +41,8 @@ function init() {
     // provided for you
     container = document.getElementById( 'container' );
 
-    camera = new THREE.PerspectiveCamera( 20, window.innerWidth / window.innerHeight, 1, 10000 );
+    const aspect = window.innerWidth / window.innerHeight;
+    camera = new THREE.PerspectiveCamera( 20, aspect, 1, 10000 );
     camera.position.z = 1800;
 
     // separate initScene() function, so we can call it repeatedly from 
@@ -50,7 +51,7 @@ function init() {
  
     renderer = new THREE.WebGLRenderer( { antialias: true } );
     renderer.setPixelRatio( window.devicePixelRatio );
-    renderer.setSize( window.innerWidth, window.innerHeight );
+    renderer.setSize( window.innerWidth, window.innerHeight, true );
     container.appendChild( renderer.domElement );
 
     document.addEventListener( 'mousemove', onDocumentMouseMove );
@@ -67,11 +68,10 @@ function initScene() {
 
     // get 6 random numbers directly from the token seed
     let numbers = makeNumbersFromEndlessWaysTokenSeed(6);
-    console.log(numbers);
 
-    const oneThirdWindowWidth = window.innerWidth/3;
+    const maxRadius = 100;
 
-    const radius = 50 + numbers[0]*(oneThirdWindowWidth/2);
+    const radius = 50 + numbers[0]*maxRadius;
 
     const detail = 1 + Math.floor(numbers[1] * 4);
     const geometry1 = new THREE.IcosahedronGeometry( radius, detail );
@@ -121,7 +121,7 @@ function initScene() {
     let mesh = new THREE.Mesh( geometry1, material );
     let wireframe = new THREE.Mesh( geometry1, wireframeMaterial );
     mesh.add( wireframe );
-    mesh.position.x = - oneThirdWindowWidth*2;
+    mesh.position.x = - maxRadius*2;
     scene.add( mesh );
 
     mesh = new THREE.Mesh( geometry2, material );
@@ -132,13 +132,13 @@ function initScene() {
     mesh = new THREE.Mesh( geometry3, material );
     wireframe = new THREE.Mesh( geometry3, wireframeMaterial );
     mesh.add( wireframe );
-    mesh.position.x = oneThirdWindowWidth*2;
+    mesh.position.x = maxRadius*2;
     scene.add( mesh );
 }
 
 function onDocumentMouseMove( event ) {
-    mouseX = ( event.clientX - windowHalfX );
-    mouseY = ( event.clientY - windowHalfY );
+    //mouseX = ( event.clientX - windowHalfX );
+    //mouseY = ( event.clientY - windowHalfY );
 }
 
 function onDocumentKeyDown( event ) {
