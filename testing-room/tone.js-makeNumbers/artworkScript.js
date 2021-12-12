@@ -25,18 +25,17 @@ document.querySelector('button')?.addEventListener('click', async () => {
     console.log('audio is ready')
 })
 
-function makeOscillators(notes) {
-    const oscillators = notes.map((noteNumber) => {
-        const note = Tone.Frequency(noteNumber, "midi").toNote();
-        const pwm = new Tone.Oscillator(note, "sine");
-        pwm.toDestination().start();
-        pwm.volume.value = -12;
-        return pwm;
-    });   
-    return oscillators; 
-}
+// make the synth
+const synth = new Tone.PolySynth(Tone.Synth, {
+    oscillator: {
+        partials: [0, 2, 3, 4],
+    }
+}).toDestination();
 
-var oscillators = [];
+// global notes array - this is so we can call triggerRelease on the synth later
+var notes = [];
+
+// generate an array of note names from the Endless Ways token seed and play them on the synth
 function initDrone() {
     const numbers = makeNumbersFromEndlessWaysTokenSeed(8);
     function makeDrone() {
@@ -47,25 +46,28 @@ function initDrone() {
         const baseNote = 30 + Math.floor(numbers[0]*30);
         const mode = modes[Math.floor(numbers[1] * 2.99999)];
         const length = 1 + Math.floor(numbers[2] * 4.99999);
-        var noteNumbers = [];
+        var noteNames = [];
         for (var i=0; i<length; i++) {
             const whichNoteIndex = Math.floor(numbers[3+i] * 14.99999);
-            noteNumbers.push( baseNote + mode[whichNoteIndex]);
+            const noteNumber = baseNote + mode[whichNoteIndex];
+            noteNames.push(Tone.Frequency(noteNumber, "midi").toNote());
         }
-        return noteNumbers;
+        return noteNames;
     }
 
-    let midiNoteNumbers = makeDrone();
-    const messageDiv = document.getElementById( 'message' );
-    messageDiv.innerText = "Midi note numbers: " + midiNoteNumbers.join(", "); 
+    notes = makeDrone();
 
-    oscillators = makeOscillators(midiNoteNumbers);
+    const messageDiv = document.getElementById( 'message' );
+    messageDiv.innerText = "notes: " + notes.join(", "); 
+
+    synth.triggerAttack(notes);
 }
 
+// do it
 initDrone();
 
+// catch key events (for testing)
 document.addEventListener( 'keydown', onDocumentKeyDown, false);
-
 function onDocumentKeyDown( event ) {
     var keyCode = event.which;
 
@@ -74,13 +76,13 @@ function onDocumentKeyDown( event ) {
         // only run this if we're inside the testing room
         if (typeof(endlessWaysTestHelper) !== 'undefined') {
             endlessWaysTestHelper.makeNewTokenInfo();
-            oscillators.forEach((osc) => {
-                osc.stop().disconnect();
-            })
+            synth.triggerRelease(notes);
             initDrone();
         }
     }
 }
+
+
 
 //////////////////////////////////
 // The following is to help deal with the endlessWaysTokenInfo object, and has been copied from
