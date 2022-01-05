@@ -2,9 +2,9 @@
 // a global object called endlessWaysTokenInfo that looks like this:
 //
 // const endlessWaysTokenInfo = {
-//    artworkId: 0,
-//    mintNumber: this.nextMintNumber.toString(),
-//    seed: getRandomSeed(this)
+//    artworkId: 100, // the artwork id on Endless Ways
+//    mintNumber: 1, // the mint number, 1-based
+//    seed: "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef" // random seed, 256 bits / 64 hex characters
 // }
 //
 // To simulate this when developing and testing your code, include EndlessWaysTestHelper.js in 
@@ -28,7 +28,7 @@ function setup() {
     // HSB colour mode
     colorMode(HSB, 360, 255, 255, 1);
     // make a cross-browser-safe Random object
-    safeRandom = makeRandomFromEndlessWaysTokenSeed();
+    safeRandom = makeRandomFromSeed();
 
     // setup positions
     positions = [];
@@ -88,7 +88,7 @@ function keyPressed() {
 
 // Get a Random object that will give you an endless, predictable sequence of numbers based
 // on the current Endless Ways token seed.
-function makeRandomFromEndlessWaysTokenSeed() {
+function makeRandomFromSeed() {
     const seedString = endlessWaysTokenInfo.seed;
     // collapse the seed string to a single 32 bit number using XOR
     var seedNumber = 0;

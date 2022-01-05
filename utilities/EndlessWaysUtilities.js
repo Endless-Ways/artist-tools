@@ -32,7 +32,7 @@ function makeNumbersFromSeed(howMany) {
 
 // Get a Random object that will give you an endless, predictable sequence of numbers based
 // on the current Endless Ways token seed.
-function makeRandomFromEndlessWaysTokenSeed() {
+function makeRandomFromSeed() {
     const seedString = endlessWaysTokenInfo.seed;
     // collapse the seed string to a single 32 bit number using XOR
     var seedNumber = 0;

@@ -29,7 +29,7 @@ Preferred over p5.js built-in random, or any other random that might potentially
 
 Use by calling `makeRandomFromSeed()`, or provide your own seed number.
 
-### `getRandom()`
+### `makeRandomFromSeed()`
 
 Returns a Random object that will give you an endless, predictable sequence of numbers based on the current Endless Ways token seed.
 

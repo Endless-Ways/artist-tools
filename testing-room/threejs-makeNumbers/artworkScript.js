@@ -2,9 +2,9 @@
 // a global object called endlessWaysTokenInfo that looks like this:
 //
 // const endlessWaysTokenInfo = {
-//    artworkId: 0,
-//    mintNumber: this.nextMintNumber.toString(),
-//    seed: getRandomSeed(this)
+//    artworkId: 100, // the artwork id on Endless Ways
+//    mintNumber: 1, // the mint number, 1-based
+//    seed: "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef" // random seed, 256 bits / 64 hex characters
 // }
 //
 // To simulate this when developing and testing your code, include EndlessWaysTestHelper.js in 
