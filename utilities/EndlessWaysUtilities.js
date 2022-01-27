@@ -35,7 +35,7 @@ function makeNumbersFromSeed(howMany) {
 function makeRandomFromSeed() {
     const seedString = endlessWaysTokenInfo.seed;
     // collapse the seed string to a single 32 bit number using XOR
-    var seedNumber = 0;
+    var seedNumber = 1;
     for (var i=0; i<8; i++) {
         var part = seedString.substring(i*8, (i+1)*8);
         seedNumber ^= parseInt(part, 16);
@@ -54,7 +54,10 @@ function makeRandomFromSeed() {
 // Use by calling makeRandomFromSeed(), or provide your own (number) seed.
 //
 class Random {
-    constructor(seed = 0) {
+    constructor(seed = 1) {
+        if (seed <= 0) {
+            throw("bad seed - must be > 0")
+        }
         this.seed = seed;
     }
 
