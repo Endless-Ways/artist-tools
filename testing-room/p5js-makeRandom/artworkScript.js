@@ -115,10 +115,10 @@ class Random {
         if (seed < 0) {
             seed = Math.abs(seed);
         }
-        if (seed === 2147483647) {
-            seed += 1;
-        }
         this.seed = seed % 2147483647
+        if (this.seed === 0) {
+            this.seed = 1;
+        }
     }
 
     // get a random int between a and b (>=a and <b)
