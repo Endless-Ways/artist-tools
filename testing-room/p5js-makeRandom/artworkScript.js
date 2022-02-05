@@ -101,7 +101,7 @@ function makeRandomFromSeed() {
 }
 
 
-// 16 bit precision pseudo-random number generator. Safe for cross-browser use.
+// 31 bit precision pseudo-random number generator. Safe for cross-browser use.
 // 
 // Preferred over p5.js built-in random, or any other random that might potentially fall back
 // to calling the browser's own implementation - these might make your artwork look different 
@@ -110,23 +110,27 @@ function makeRandomFromSeed() {
 // Use by calling makeRandomFromSeed(), or provide your own (number) seed.
 //
 class Random {
-    constructor(seed = 1) {
-        if (seed <= 0) {
-            throw("bad seed - must be > 0")
+    constructor(seed = 10000) {
+        // fix bad seeds
+        if (seed < 0) {
+            seed = Math.abs(seed);
         }
-        this.seed = seed;
+        if (seed === 2147483647) {
+            seed += 1;
+        }
+        this.seed = seed % 2147483647
     }
 
     // get a random int between a and b (>=a and <b)
     random_i(a, b) {
         return Math.floor(this.random_f(Math.floor(a), Math.floor(b)));
     }
+
     // get a random float between 0 and 1 (>=0 and <1)
     random_01() {
-        this.seed ^= this.seed << 13;
-        this.seed ^= this.seed >> 17;
-        this.seed ^= this.seed << 5;
-        return ((this.seed < 0 ? ~this.seed + 1 : this.seed) % 65536) / 65536;
+        // revised Park & Miller / MINSTD
+        this.seed = (this.seed * 48271) % 2147483647;
+        return (this.seed - 1) / 2147483646;
     }
 
     // get a random float between a and b (>=a and <b)
