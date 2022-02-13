@@ -51,10 +51,10 @@ class EndlessWaysTestHelper {
     // draw the endlessWaysTokenInfo
     drawTokenInfo() {
         push();
-        colorMode(RGB, 255, 255, 255, 1);
+        colorMode(RGB, 255, 255, 255, 255);
         rectMode(CORNER);
         noStroke();
-        fill(0, 0, 0, 0.25);
+        fill(0, 0, 0, 64);
         rect(5, 5, 468, 53);
         fill(255);
         text('artworkId: ' + endlessWaysTokenInfo.artworkId, 10, 20);
