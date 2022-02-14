@@ -23,7 +23,7 @@ This file contains some helpful code you can copy and paste into your own projec
 
 ### `Random`
 
-A class for generating 16 bit precision pseudo-random numbers, that is safe for cross-browser use.
+A class for generating 31 bit precision pseudo-random numbers, that is safe for cross-browser use.
 
 Preferred over p5.js built-in random, or any other random that might potentially fall back to calling the browser's own implementation of `random()` - these might make your artwork look different on different web browsers, which is probably not what you want to happen.
 
